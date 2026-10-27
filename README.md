@@ -24,3 +24,4 @@ Publish the contents of this folder as a static site with GitHub Pages, Netlify,
 - Add research findings only after review for accuracy and sensitive information.
 
 The supplied purple sigil is preserved in `assets/silent-shadow-sigil-source.webp`. Three vector drawn katana are layered over it in `assets/silent-shadow-katana.svg`, which is used throughout the site. Project descriptions, status, technologies, and dashboard details are explicitly marked unverified or illustrative where repository evidence was unavailable. The dashboard is a visual concept and does not perform scans.
+
