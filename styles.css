@@ -218,4 +218,19 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 /* Keep signal-flow paths between the canvas and interactive layer cards. */
 .model-flow .connectors{z-index:0}
 .model-flow .arch-node{z-index:1}
+/* Give the Silent Shadow sigil more scale, dimensional light, and motion. */
+.hero-emblem{width:390px;height:340px;isolation:isolate}
+.hero-emblem:before{content:"";position:absolute;z-index:0;width:292px;height:292px;top:50%;left:50%;transform:translate(-50%,-59%);border-radius:50%;background:conic-gradient(from 0deg,transparent 0 8%,rgba(189,90,255,.8) 10%,transparent 14% 34%,rgba(116,35,255,.72) 38%,transparent 42% 68%,rgba(245,210,255,.8) 72%,transparent 77%);mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));filter:drop-shadow(0 0 9px rgba(160,48,255,.85));animation:sigilRingSpin 24s linear infinite}
+.hero-emblem:after{content:"";position:absolute;z-index:0;top:48%;left:50%;width:320px;height:190px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(165,56,255,.24),transparent 66%);filter:blur(8px);animation:sigilFlare 4s ease-in-out infinite alternate}
+.hero-ss-mark{z-index:1;width:300px;height:300px;filter:drop-shadow(0 0 12px #b43cff) drop-shadow(0 0 36px rgba(121,0,255,.88)) drop-shadow(0 0 64px rgba(178,78,255,.35));animation:sigilHover 5.5s ease-in-out infinite,sigilGlow 3s ease-in-out infinite alternate}
+.hero-brand-wordmark,.hero-brand-tag{z-index:2}
+.hero-brand-wordmark{font-size:20px;letter-spacing:.24em;text-shadow:0 0 12px #c58aff,0 0 32px rgba(128,29,255,.9)}
+@keyframes sigilRingSpin{to{rotate:360deg}}
+@keyframes sigilHover{0%,100%{transform:translateY(0) rotate(-1.5deg) scale(1)}50%{transform:translateY(-9px) rotate(1.5deg) scale(1.035)}}
+@keyframes sigilGlow{from{filter:drop-shadow(0 0 9px #9a27f4) drop-shadow(0 0 24px rgba(121,0,255,.72))}to{filter:drop-shadow(0 0 16px #e0a7ff) drop-shadow(0 0 46px rgba(174,59,255,.95))}}
+@keyframes sigilFlare{from{opacity:.45;scale:.88}to{opacity:1;scale:1.12}}
+@media(min-width:851px) and (max-width:1120px){.hero-emblem{width:350px;height:315px}.hero-ss-mark{width:260px;height:260px}.hero-brand-wordmark{font-size:17px}}
+@media(max-width:850px){.hero-emblem{width:300px;height:280px}.hero-emblem:before{width:230px;height:230px}.hero-emblem:after{width:260px;height:150px}.hero-ss-mark{width:225px;height:225px}.hero-brand-wordmark{font-size:15px}}
+@media(max-width:560px){.hero-emblem{width:235px;height:225px}.hero-emblem:before{width:175px;height:175px}.hero-emblem:after{width:210px;height:120px}.hero-ss-mark{width:170px;height:170px}.hero-brand-wordmark{font-size:12px}.hero-brand-tag{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.hero-emblem:before,.hero-emblem:after,.hero-ss-mark{animation:none!important}}
 
