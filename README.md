@@ -19,9 +19,9 @@ Publish the contents of this folder as a static site with GitHub Pages, Netlify,
 ## Before publishing
 
 - Contact links are configured for LinkedIn, GitHub, and email.
-- Add verified project documentation and the SH.A.D.O.W full form when available.
-- Confirm project statuses, technologies, and any public demo or repository links.
+- The project index leads with the public Black Bulls Crypto and Marineford Mart repositories.
+- S.H.A.D.O.W., Sheringen Eye, Anime CTF Web, and Base64 Sudoku remain labeled as reference concepts until their source is available.
 - Add research findings only after review for accuracy and sensitive information.
 
-The supplied purple sigil is preserved in `assets/silent-shadow-sigil-source.webp`. Three vector drawn katana are layered over it in `assets/silent-shadow-katana.svg`, which is used throughout the site. Project descriptions, status, technologies, and dashboard details are explicitly marked unverified or illustrative where repository evidence was unavailable. The dashboard is a visual concept and does not perform scans.
+The supplied purple sigil is preserved in `assets/silent-shadow-sigil-source.webp`. Three vector drawn katana are layered over it in `assets/silent-shadow-katana.svg`, which is used throughout the site. The two public project case studies use repository-backed details. Remaining concept cards and the S.H.A.D.O.W. dashboard are labeled unverified or illustrative; the dashboard does not perform scans.
 

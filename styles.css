@@ -234,3 +234,6 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 @media(max-width:560px){.hero-emblem{width:235px;height:225px}.hero-emblem:before{width:175px;height:175px}.hero-emblem:after{width:210px;height:120px}.hero-ss-mark{width:170px;height:170px}.hero-brand-wordmark{font-size:12px}.hero-brand-tag{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.hero-emblem:before,.hero-emblem:after,.hero-ss-mark{animation:none!important}}
 
+
+/* Public project case studies */
+.gallery-intro{max-width:390px;margin:14px 0 0;color:var(--muted);font:10px/1.7 var(--mono)}.repository-link{display:inline-block;margin-right:18px}.repository-link[hidden]{display:none}.project-pick[hidden]{display:none!important}.project-pick b{line-height:1.35}
