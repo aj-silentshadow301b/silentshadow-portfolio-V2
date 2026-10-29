@@ -103,5 +103,5 @@ if(!motionPreference.matches){
   xLabels.innerHTML=labels.map(x=>'<span>'+x+'</span>').join('');
   document.querySelector('#chart-metric-label').textContent=metric.options[metric.selectedIndex].text.toUpperCase();
  }
- metric.addEventListener('change',draw);windowSelect.addEventListener('change',draw);refresh.addEventListener('click',draw);draw();
+ metric.addEventListener('change',draw);windowSelect.addEventListener('change',draw);refresh.addEventListener('click',draw);draw();let timer=0,visible=true;function start(){if(timer||motionPreference.matches)return;timer=window.setInterval(()=>{if(visible&&!document.hidden)draw()},2600)}function stop(){window.clearInterval(timer);timer=0}document.addEventListener('visibilitychange',()=>document.hidden?stop():start());const chartObserver=new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);visible?start():stop()},{threshold:.12});chartObserver.observe(document.querySelector('.dash-graph'));motionPreference.addEventListener?.('change',e=>e.matches?stop():start());
 })();
