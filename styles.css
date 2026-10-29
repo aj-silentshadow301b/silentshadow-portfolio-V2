@@ -240,3 +240,34 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 
 /* Keep the S.H.A.D.O.W. project heading free of a generated suffix. */
 .feature-heading h2::after{content:none !important}
+
+/* Concept module map fills the featured-project column without implying live services. */
+.feature-heading{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;gap:clamp(22px,3.4vw,48px)}
+.shadow-side{min-width:0;display:grid;align-content:start;gap:14px}
+.shadow-console{position:relative;overflow:hidden;padding:13px;border:1px solid #6c2998;background:radial-gradient(ellipse at 48% 48%,rgba(104,28,165,.16),transparent 58%),linear-gradient(145deg,#0b0812,#07060c 72%);box-shadow:inset 0 0 35px rgba(121,0,255,.06),0 0 24px rgba(121,0,255,.1)}
+.shadow-console:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 49%,rgba(176,38,255,.035) 50%,transparent 51%);background-size:100% 7px;opacity:.45}
+.shadow-console-head,.shadow-console-foot{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;font:7px var(--mono);letter-spacing:.07em;color:#a995bd}
+.shadow-console-head{padding-bottom:10px;border-bottom:1px solid #30203e}
+.shadow-console-head i{color:#c77aff;font-style:normal}
+.shadow-console-head span:last-child{color:#8c7c9b;text-align:right}
+.shadow-diagram{position:relative;z-index:1;display:block;width:100%;height:auto;min-height:205px;margin:4px 0}
+.shadow-link{fill:none;stroke:#50306a;stroke-width:2}
+.shadow-signal{fill:none;stroke:url(#shadow-flow);stroke-width:2;stroke-dasharray:7 13;filter:url(#shadow-glow);animation:shadowSignalTravel 2.8s linear infinite}
+.shadow-node{fill:#0d0a14;stroke:#573477;stroke-width:1.2}
+.shadow-node-id{fill:#39ff14;font:8px var(--mono);letter-spacing:1px}
+.shadow-node-title{fill:#eee5fb;font:600 11px 'Oxanium',var(--display);letter-spacing:.5px}
+.shadow-node-note{fill:#9e91ad;font:8px var(--mono)}
+.shadow-core{fill:#100a1b;stroke:#a344e6;stroke-width:1.5;filter:url(#shadow-glow)}
+.shadow-core-ring{fill:none;stroke:#b026ff;stroke-width:1;stroke-dasharray:3 5;transform-origin:350px 145px;animation:shadowCoreOrbit 14s linear infinite}
+.shadow-core-label{fill:#f5e9ff;font:700 15px 'Oxanium',var(--display);text-anchor:middle;letter-spacing:1px}
+.shadow-core-sub{fill:#b58bd2;font:7px var(--mono);text-anchor:middle;letter-spacing:.7px}
+.shadow-console-foot{padding-top:9px;border-top:1px solid #30203e;font-size:6px}
+.shadow-console-foot i{display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#b026ff;box-shadow:0 0 9px #b026ff}
+.shadow-side .tabs{margin-top:0;gap:clamp(10px,1.6vw,22px)}
+.shadow-side .tab{font-size:8px}
+.shadow-side .tab-panel{min-height:115px}
+@keyframes shadowSignalTravel{to{stroke-dashoffset:-40}}
+@keyframes shadowCoreOrbit{to{rotate:360deg}}
+@media(max-width:850px){.feature-heading{grid-template-columns:1fr}.shadow-side{gap:12px}.shadow-diagram{min-height:0}.shadow-console-foot{font-size:6px}}
+@media(max-width:560px){.shadow-console{padding:10px}.shadow-console-head{font-size:6px}.shadow-node-title{font-size:10px}.shadow-node-note{font-size:7px}.shadow-side .tabs{gap:14px}.shadow-side .tab{font-size:7px}.shadow-side .tab-panel{padding:13px}}
+@media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring{animation:none!important}}
