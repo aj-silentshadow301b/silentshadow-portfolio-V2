@@ -112,27 +112,75 @@ if(!motionPreference.matches){
  document.body.classList.add('motion-ready');
 }
 
-// Interactive, deterministic demo chart: all values are generated locally and are not scan results.
+// Interactive simulated lab signal: locally generated, smoothly interpolated, and never scan data.
 (()=>{
  const metric=document.querySelector('#chart-metric'),windowSelect=document.querySelector('#chart-window'),refresh=document.querySelector('#chart-refresh');
- const line=document.querySelector('#chart-line'),area=document.querySelector('#chart-area'),points=document.querySelector('#chart-points'),tooltip=document.querySelector('#chart-tooltip'),xLabels=document.querySelector('#chart-x-labels');
- if(!metric||!line)return;
- let generation=0;
- const hash=s=>[...s].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,17);
- function draw(){
-  generation++;
-  const m=metric.value,w=windowSelect.value,labels=w==='day'?['00','03','06','09','12','15','18','21']:w==='week'?['MON','TUE','WED','THU','FRI','SAT','SUN']:['01','04','07','10','13','16','19','22','25','28'];
-  const seed=hash(m+w+generation),count=labels.length;
-  let state=seed||1;
-  const rnd=()=>{state=(state*1664525+1013904223)>>>0;return state/4294967296};
-  const base=m==='findings'?16:m==='events'?44:62;
-  const values=labels.map((_,i)=>Math.max(4,Math.min(96,base+Math.sin(i*.9+generation)*17+(rnd()-.5)*(m==='findings'?40:28))));
-  const coords=values.map((v,i)=>({x:44+i*(644/(count-1)),y:168-v*1.44,v,label:labels[i]}));
-  const d=coords.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
-  line.setAttribute('d',d);let trace=document.querySelector('#chart-trace');if(!trace){trace=line.cloneNode(false);trace.id='chart-trace';trace.setAttribute('aria-hidden','true');trace.setAttribute('pathLength','1000');line.after(trace)}trace.setAttribute('d',d);area.setAttribute('d',d+' L'+coords[coords.length-1].x+' 168 L'+coords[0].x+' 168 Z');
-  points.replaceChildren(...coords.map(p=>{const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r','4');c.setAttribute('class','chart-point');c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',p.label+': '+Math.round(p.v)+' demo '+m);const show=()=>{tooltip.textContent=p.label+' / '+Math.round(p.v)+' '+m+' · DEMO';tooltip.setAttribute('x',String(Math.min(540,Math.max(50,p.x-34))));tooltip.setAttribute('y',String(Math.max(16,p.y-13)))};c.addEventListener('pointerenter',show);c.addEventListener('focus',show);c.addEventListener('click',show);return c}));
-  xLabels.innerHTML=labels.map(x=>'<span>'+x+'</span>').join('');
-  document.querySelector('#chart-metric-label').textContent=metric.options[metric.selectedIndex].text.toUpperCase();
+ const line=document.querySelector('#chart-line'),area=document.querySelector('#chart-area'),points=document.querySelector('#chart-points'),tooltip=document.querySelector('#chart-tooltip'),xLabels=document.querySelector('#chart-x-labels'),chart=document.querySelector('.dash-graph');
+ if(!metric||!windowSelect||!refresh||!line||!area||!points||!chart)return;
+ const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+ let generation=0,timer=0,frame=0,visible=false,values=[],activeMetric=metric.value,labelSignature='',trend=0;
+ const labelsFor=w=>w==='day'?['00','03','06','09','12','15','18','21']:w==='week'?['MON','TUE','WED','THU','FRI','SAT','SUN']:['01','04','07','10','13','16','19','22','25','28'];
+ const limits=m=>m==='findings'?[2,38]:m==='events'?[10,82]:[18,96];
+ const baseline=m=>m==='findings'?17:m==='events'?43:63;
+ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+ const random=()=>Math.random();
+ function seedSeries(count,m){
+  const bounds=limits(m);let value=baseline(m)+(random()-.5)*16;
+  return Array.from({length:count},()=>{value=clamp(value+(random()-.5)*17,bounds[0],bounds[1]);return value});
  }
- metric.addEventListener('change',draw);windowSelect.addEventListener('change',draw);refresh.addEventListener('click',draw);draw();let timer=0,visible=true;function start(){if(timer||motionPreference.matches)return;timer=window.setInterval(()=>{if(visible&&!document.hidden)draw()},2600)}function stop(){window.clearInterval(timer);timer=0}document.addEventListener('visibilitychange',()=>document.hidden?stop():start());const chartObserver=new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);visible?start():stop()},{threshold:.12});chartObserver.observe(document.querySelector('.dash-graph'));motionPreference.addEventListener?.('change',e=>e.matches?stop():start());
+ function nextSeries(){
+  const bounds=limits(metric.value);
+  trend=trend*.52+(random()-.5)*5;
+  return values.map((v,i)=>{
+   const cycle=Math.sin((generation+i)*.68)*1.1;
+   const spike=random()>.94?(random()-.5)*13:0;
+   return clamp(v+trend+(random()-.5)*7+cycle+spike,bounds[0],bounds[1]);
+  });
+ }
+ function ensurePoints(count){
+  if(points.childElementCount===count)return;
+  points.replaceChildren(...Array.from({length:count},(_,index)=>{
+   const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+   c.setAttribute('r','4');c.setAttribute('class','chart-point');c.setAttribute('tabindex','0');c.setAttribute('role','button');
+   const show=()=>{const p=values[index];if(p===undefined)return;const labels=labelsFor(windowSelect.value);tooltip.textContent=labels[index]+' / '+Math.round(p)+' '+metric.value+' · DEMO';tooltip.setAttribute('x',String(Math.min(540,Math.max(50,44+index*(644/(values.length-1))-34))));tooltip.setAttribute('y',String(Math.max(16,168-p*1.44-13)))};
+   c.addEventListener('pointerenter',show);c.addEventListener('focus',show);c.addEventListener('click',show);
+   return c;
+  }));
+ }
+ function render(series,animate){
+  if(frame)cancelAnimationFrame(frame);
+  ensurePoints(series.length);
+  const from=values.length===series.length?values.slice():series.map(()=>baseline(metric.value));
+  const duration=animate&&!motionPreference.matches?1150:0,start=performance.now();
+  const paint=now=>{
+   const progress=duration?Math.min(1,(now-start)/duration):1,eased=1-Math.pow(1-progress,3);
+   const current=series.map((target,i)=>from[i]+(target-from[i])*eased);
+   const coords=current.map((v,i)=>({x:44+i*(644/(current.length-1)),y:168-v*1.44,v}));
+   const d=coords.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+   line.setAttribute('d',d);
+   area.setAttribute('d',d+' L'+coords[coords.length-1].x+' 168 L'+coords[0].x+' 168 Z');
+   coords.forEach((p,i)=>{const point=points.children[i];point.setAttribute('cx',p.x);point.setAttribute('cy',p.y);if(progress===1)point.setAttribute('aria-label',labelsFor(windowSelect.value)[i]+': '+Math.round(p.v)+' simulated '+metric.value)});
+   values=current;
+   if(progress<1)frame=requestAnimationFrame(paint);else frame=0;
+  };
+  if(duration)frame=requestAnimationFrame(paint);else paint(start);
+ }
+ function draw(animate=true,regenerate=false){
+  generation++;
+  const labels=labelsFor(windowSelect.value),signature=labels.join('|'),changed=metric.value!==activeMetric||values.length!==labels.length;
+  if(signature!==labelSignature){xLabels.replaceChildren(...labels.map(label=>{const span=document.createElement('span');span.textContent=label;return span}));labelSignature=signature}
+  document.querySelector('#chart-metric-label').textContent=metric.options[metric.selectedIndex].text.toUpperCase();
+  const series=!values.length||changed||regenerate?seedSeries(labels.length,metric.value):nextSeries();
+  activeMetric=metric.value;render(series,animate);
+ }
+ function stop(){if(timer){clearTimeout(timer);timer=0}if(frame){cancelAnimationFrame(frame);frame=0}}
+ function schedule(){if(timer||!visible||document.hidden||motionPreference.matches)return;timer=window.setTimeout(()=>{timer=0;if(visible&&!document.hidden&&!motionPreference.matches){draw(true);schedule()}},4800)}
+ metric.addEventListener('change',()=>draw(true,true));
+ windowSelect.addEventListener('change',()=>draw(true,true));
+ refresh.addEventListener('click',()=>draw(true,true));
+ document.addEventListener('visibilitychange',()=>document.hidden?stop():schedule());
+ const observer=new IntersectionObserver(entries=>{visible=entries.some(entry=>entry.isIntersecting);chart.classList.toggle('is-chart-visible',visible);visible?schedule():stop()},{threshold:.12});
+ observer.observe(chart);
+ motionPreference.addEventListener?.('change',event=>event.matches?stop():schedule());
+ draw(false,true);
 })();
