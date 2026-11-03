@@ -117,6 +117,7 @@ if(!motionPreference.matches){
  const metric=document.querySelector('#chart-metric'),windowSelect=document.querySelector('#chart-window'),refresh=document.querySelector('#chart-refresh');
  const line=document.querySelector('#chart-line'),area=document.querySelector('#chart-area'),points=document.querySelector('#chart-points'),tooltip=document.querySelector('#chart-tooltip'),xLabels=document.querySelector('#chart-x-labels'),chart=document.querySelector('.dash-graph');
  if(!metric||!windowSelect||!refresh||!line||!area||!points||!chart)return;
+ let trace=document.querySelector('#chart-trace');if(!trace){trace=line.cloneNode(false);trace.id='chart-trace';trace.setAttribute('aria-hidden','true');trace.setAttribute('pathLength','1000');line.after(trace)}
  const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
  let generation=0,timer=0,frame=0,visible=false,values=[],activeMetric=metric.value,labelSignature='',trend=0;
  const labelsFor=w=>w==='day'?['00','03','06','09','12','15','18','21']:w==='week'?['MON','TUE','WED','THU','FRI','SAT','SUN']:['01','04','07','10','13','16','19','22','25','28'];
@@ -158,6 +159,7 @@ if(!motionPreference.matches){
    const coords=current.map((v,i)=>({x:44+i*(644/(current.length-1)),y:168-v*1.44,v}));
    const d=coords.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
    line.setAttribute('d',d);
+   trace.setAttribute('d',d);
    area.setAttribute('d',d+' L'+coords[coords.length-1].x+' 168 L'+coords[0].x+' 168 Z');
    coords.forEach((p,i)=>{const point=points.children[i];point.setAttribute('cx',p.x);point.setAttribute('cy',p.y);if(progress===1)point.setAttribute('aria-label',labelsFor(windowSelect.value)[i]+': '+Math.round(p.v)+' simulated '+metric.value)});
    values=current;
