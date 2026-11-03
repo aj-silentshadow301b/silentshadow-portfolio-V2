@@ -162,7 +162,7 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 .chart-y-grid path{stroke:#30213e;stroke-width:1;stroke-dasharray:2 5}
 .chart-y-labels text{fill:#655d70;font:8px var(--mono)}
 .chart-area{fill:url(#chart-fill);stroke:none}
-.chart-line{fill:none;stroke:#c55cff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(176,38,255,.65));transition:d .35s ease}
+.chart-line{fill:none;stroke:#c55cff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(176,38,255,.65));transition:stroke .25s ease,opacity .25s ease}
 .chart-point{fill:#e9c8ff;stroke:#9b2bff;stroke-width:2;cursor:pointer;transition:r .15s}
 .chart-point:hover,.chart-point:focus{r:7;fill:#39ff14;stroke:#d4ffc9;outline:none}
 #chart-tooltip{fill:#e2c8ff;font:9px var(--mono);paint-order:stroke;stroke:#080710;stroke-width:3px;stroke-linejoin:round}
@@ -269,10 +269,10 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 .shadow-activity{min-height:0;padding:12px 14px 9px}
 .shadow-activity .chart-canvas{min-height:135px}
 .shadow-activity .chart-canvas svg{height:125px}
-#chart-trace{fill:none;stroke:#f0c4ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:16 984;stroke-dashoffset:0;pointer-events:none;filter:drop-shadow(0 0 8px rgba(231,170,255,.95));animation:chart-trace-flow 2.4s linear infinite}
+#chart-trace{fill:none;stroke:#f0c4ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:22 978;stroke-dashoffset:0;pointer-events:none;opacity:.48} .shadow-activity.is-chart-visible #chart-trace{animation:chart-trace-flow 3.8s linear infinite;opacity:1}
 @keyframes chart-trace-flow{to{stroke-dashoffset:-1000}}
 @keyframes shadowSignalTravel{to{stroke-dashoffset:-40}}
 @keyframes shadowCoreOrbit{to{rotate:360deg}}
 @media(max-width:850px){.feature-heading{grid-template-columns:1fr}.shadow-side{gap:12px}.shadow-diagram{min-height:0}.shadow-console-foot{font-size:6px}}
 @media(max-width:560px){.shadow-console{padding:10px}.shadow-console-head{font-size:6px}.shadow-node-title{font-size:10px}.shadow-node-note{font-size:7px}.shadow-side .tabs{gap:14px}.shadow-side .tab{font-size:7px}.shadow-side .tab-panel{padding:13px}}
-@media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring,#chart-trace{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring,#chart-trace{animation:none!important;opacity:.48!important}}
