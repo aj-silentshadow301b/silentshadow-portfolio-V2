@@ -266,8 +266,13 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 .shadow-side .tabs{margin-top:0;gap:clamp(10px,1.6vw,22px)}
 .shadow-side .tab{font-size:8px}
 .shadow-side .tab-panel{min-height:115px}
+.shadow-activity{min-height:0;padding:12px 14px 9px}
+.shadow-activity .chart-canvas{min-height:135px}
+.shadow-activity .chart-canvas svg{height:125px}
+#chart-trace{fill:none;stroke:#f0c4ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:16 984;stroke-dashoffset:0;pointer-events:none;filter:drop-shadow(0 0 8px rgba(231,170,255,.95));animation:chart-trace-flow 2.4s linear infinite}
+@keyframes chart-trace-flow{to{stroke-dashoffset:-1000}}
 @keyframes shadowSignalTravel{to{stroke-dashoffset:-40}}
 @keyframes shadowCoreOrbit{to{rotate:360deg}}
 @media(max-width:850px){.feature-heading{grid-template-columns:1fr}.shadow-side{gap:12px}.shadow-diagram{min-height:0}.shadow-console-foot{font-size:6px}}
 @media(max-width:560px){.shadow-console{padding:10px}.shadow-console-head{font-size:6px}.shadow-node-title{font-size:10px}.shadow-node-note{font-size:7px}.shadow-side .tabs{gap:14px}.shadow-side .tab{font-size:7px}.shadow-side .tab-panel{padding:13px}}
-@media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring,#chart-trace{animation:none!important}}
