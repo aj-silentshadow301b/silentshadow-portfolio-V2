@@ -127,15 +127,16 @@ if(!motionPreference.matches){
  const random=()=>Math.random();
  function seedSeries(count,m){
   const bounds=limits(m);let value=baseline(m)+(random()-.5)*16;
-  return Array.from({length:count},()=>{value=clamp(value+(random()-.5)*17,bounds[0],bounds[1]);return value});
+  return Array.from({length:count},()=>{value=clamp(value+(random()-.5)*32,bounds[0],bounds[1]);return value});
  }
  function nextSeries(){
   const bounds=limits(metric.value);
-  trend=trend*.52+(random()-.5)*5;
+  trend=trend*.38+(random()-.5)*11;
   return values.map((v,i)=>{
-   const cycle=Math.sin((generation+i)*.68)*1.1;
-   const spike=random()>.94?(random()-.5)*13:0;
-   return clamp(v+trend+(random()-.5)*7+cycle+spike,bounds[0],bounds[1]);
+   const cycle=Math.sin((generation+i)*.72)*2.4;
+   const pulse=random()>.78?(random()-.5)*38:0;
+   const localSwing=(random()-.5)*22;
+   return clamp(v+trend+localSwing+cycle+pulse,bounds[0],bounds[1]);
   });
  }
  function ensurePoints(count){
