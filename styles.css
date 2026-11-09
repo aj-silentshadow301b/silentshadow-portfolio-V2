@@ -276,3 +276,8 @@ body{background-image:radial-gradient(ellipse at 5% 25%,rgba(86,0,156,.16),trans
 @media(max-width:850px){.feature-heading{grid-template-columns:1fr}.shadow-side{gap:12px}.shadow-diagram{min-height:0}.shadow-console-foot{font-size:6px}}
 @media(max-width:560px){.shadow-console{padding:10px}.shadow-console-head{font-size:6px}.shadow-node-title{font-size:10px}.shadow-node-note{font-size:7px}.shadow-side .tabs{gap:14px}.shadow-side .tab{font-size:7px}.shadow-side .tab-panel{padding:13px}}
 @media(prefers-reduced-motion:reduce){.shadow-signal,.shadow-core-ring,#chart-trace{animation:none!important;opacity:.48!important}}
+
+/* Original Marineford Mart pirate flag project emblem. */
+.project-art .art-icon img[src*="marineford-pirate-flag"]{width:170px;height:170px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(176,38,255,.52)) drop-shadow(0 0 27px rgba(121,0,255,.28));transition:transform .4s cubic-bezier(.2,.8,.2,1),filter .4s}
+.project-detail:hover .art-icon img[src*="marineford-pirate-flag"]{transform:scale(1.07);filter:drop-shadow(0 0 17px rgba(176,38,255,.8)) drop-shadow(0 0 34px rgba(121,0,255,.42))}
+@media(max-width:560px){.project-art .art-icon img[src*="marineford-pirate-flag"]{width:130px;height:130px}}
